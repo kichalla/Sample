@@ -1,0 +1,17 @@
+﻿@model List<Survey>
+@{
+    ViewData["Title"] = "List of surveys";
+}
+
+<div ng-controller="surveyCreatorCtrl" ng-init="getListOfSurveys()">
+    <div>
+        <a asp-action="Create">Create New Survey</a>
+    </div>
+    <div>
+        <h3>List of surveys already created</h3>
+        <div ng-repeat="survey in listOfSurveys">
+            {{survey.Id}}
+            {{survey.Name}}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+﻿@model Survey
+@{
+    ViewData["Title"] = "Create New Survey";
+}
+
+<h2>Create New Survey</h2>
+<div ng-app="youSurvey">
+    <div ng-controller="surveyCreatorCtrl">
+        <div>
+            @* TODO: Can I use taghelpers/htmlhelpers along with Ajax? Basically getting best of the both worlds *@
+            <div>
+                <label for="Name">Name</label>
+                <div>
+                    <input type="text" name="Name" ng-model="name" />
+                </div>
+            </div>
+            <br />
+            <div>
+                <label for="Age">Age</label>
+                <div>
+                    <input type="text" name="Age" ng-model="age" />
+                </div>
+            </div>
+            <br />
+            <div>
+                <label for="Zipcode">Zipcode</label>
+                <div>
+                    <input type="text" name="Zipcode" ng-model="zipCode" />
+                </div>
+            </div>
+            <br />
+            <div>
+                <label for="CurriculumVitae">Curriculum Vitae</label>
+                <div>
+                    <input name="CurriculumVitae" type="file" file-model="curriculumVitae" />
+                </div>
+            </div>
+            <br />
+            <div>
+                <button ng-click="createUser()">Create User</button>
+                <b><span name="createUserStatus" ng-bind="uploadStatus"></span></b>
+            </div>
+        </div>
+    </div>
+</div>
