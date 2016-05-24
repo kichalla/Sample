@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using YouSurvey.Data;
+using YouSurvey.Internal;
 using YouSurvey.Models;
 using YouSurvey.Services;
 
@@ -19,12 +20,14 @@ namespace YouSurvey
     {
         public Startup(IHostingEnvironment env)
         {
+            Environment = env;
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
-            if (env.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets();
@@ -36,12 +39,21 @@ namespace YouSurvey
 
         public IConfigurationRoot Configuration { get; }
 
+        public IHostingEnvironment Environment { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            if (Environment.IsDevelopment())
+            {
+                services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase());
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -83,6 +95,9 @@ namespace YouSurvey
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            // Seed test data
+            SampleData.InitializeYouSurveyDatabaseAsync(app.ApplicationServices).Wait();
         }
     }
 }

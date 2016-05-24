@@ -7,7 +7,9 @@ namespace YouSurvey.Models
 {
     public class Question
     {
-        public string Id { get; set; }
+        public string QuestionId { get; set; }
+
+        public string SurveyId { get; set; }
 
         public string Description { get; set; }
 

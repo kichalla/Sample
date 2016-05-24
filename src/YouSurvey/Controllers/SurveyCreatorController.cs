@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using YouSurvey.Data;
 using YouSurvey.Models;
 
 namespace YouSurvey.Controllers
 {
     public class SurveyCreatorController : Controller
     {
+        private readonly ApplicationDbContext _dbContext;
+
+        public SurveyCreatorController(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -20,73 +28,7 @@ namespace YouSurvey.Controllers
         /// <returns></returns>
         public IActionResult List()
         {
-            var surveys = new List<Survey>();
-            var survey1 = new Survey();
-            survey1.Id = "s1";
-            survey1.Name = "Survey 1";
-
-            var q1 = new Question();
-            q1.Id = "q1";
-            q1.Description = "How was the overall experience with the demo?";
-            q1.Choices.Add(new Choice()
-            {
-                Id = "c1",
-                Description = "Satisfactory"
-            });
-            q1.Choices.Add(new Choice()
-            {
-                Id = "c2",
-                Description = "Could have been better"
-            });
-            q1.Choices.Add(new Choice()
-            {
-                Id = "c3",
-                Description = "Didn't get chance to observe"
-            });
-            q1.Choices.Add(new Choice()
-            {
-                Id = "c4",
-                Description = "Very good"
-            });
-            q1.Choices.Add(new Choice()
-            {
-                Id = "c5",
-                Description = "Good"
-            });
-            survey1.Questions.Add(q1);
-
-            var q2 = new Question();
-            q2.Id = "q2";
-            q2.Description = "How was the instructor's engagment?";
-            q2.Choices.Add(new Choice()
-            {
-                Id = "c1",
-                Description = "Satisfactory"
-            });
-            q2.Choices.Add(new Choice()
-            {
-                Id = "c2",
-                Description = "Could have been better"
-            });
-            q2.Choices.Add(new Choice()
-            {
-                Id = "c3",
-                Description = "Didn't get chance to observe"
-            });
-            q2.Choices.Add(new Choice()
-            {
-                Id = "c4",
-                Description = "Very good"
-            });
-            q2.Choices.Add(new Choice()
-            {
-                Id = "c5",
-                Description = "Good"
-            });
-            survey1.Questions.Add(q2);
-
-            surveys.Add(survey1);
-            return Ok(surveys);
+            return Ok(_dbContext.Surveys);
         }
 
         /// <summary>
