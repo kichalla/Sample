@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using YouSurvey.Data;
 using YouSurvey.Models;
 
 namespace YouSurvey.Controllers
 {
+    [Authorize]
     public class SurveyCreatorController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
@@ -28,7 +30,8 @@ namespace YouSurvey.Controllers
         /// <returns></returns>
         public IActionResult List()
         {
-            return Ok(_dbContext.Surveys);
+            var currentUser = HttpContext.User;
+            return Ok(_dbContext.Surveys.Where(survey => survey.CreatedBy == currentUser.Identity.Name));
         }
 
         /// <summary>

@@ -7,13 +7,13 @@ namespace YouSurvey.Models
 {
     public class Question
     {
-        public string QuestionId { get; set; }
+        public int QuestionId { get; set; }
 
-        public string SurveyId { get; set; }
+        public int SurveyId { get; set; }
 
         public string Description { get; set; }
 
-        public List<Choice> Choices { get; set; } = new List<Choice>();
+        public virtual List<Choice> Choices { get; set; } = new List<Choice>();
 
         public bool AllowMultipleAnswers { get; set; }
 

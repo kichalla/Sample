@@ -46,7 +46,7 @@ namespace YouSurvey.Internal
 
                 foreach (var survey in surveys)
                 {
-                    db.Entry(survey).State = EntityState.Added;
+                    db.Surveys.Add(survey);
                 }
 
                 await db.SaveChangesAsync();
@@ -64,38 +64,38 @@ namespace YouSurvey.Internal
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("config.json")
+                .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables();
             var configuration = builder.Build();
 
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
 
             // create Admin user
-            await TryCreateUser(
+            await CreateUser(
                 userManager,
                 configuration[defaultAdminUserName],
                 configuration[defaultAdminPassword],
                 new[] { new Claim("ManageAllSurveys", "Allowed") });
 
             // create regular users
-            await TryCreateUser(
+            await CreateUser(
                 userManager,
-                "james",
-                "Passw0rd",
+                "james@james.com",
+                "James1!",
                 new Claim[] { });
-            await TryCreateUser(
+            await CreateUser(
                 userManager,
-                "john",
-                "Passw0rd",
+                "john@john.com",
+                "John1!",
                 new Claim[] { });
-            await TryCreateUser(
+            await CreateUser(
                 userManager,
-                "mike",
-                "Passw0rd",
+                "mike@mike.com",
+                "Mike1!",
                 new Claim[] { });
         }
 
-        private static async Task TryCreateUser(
+        private static async Task CreateUser(
             UserManager<ApplicationUser> userManager,
             string userName,
             string password,
@@ -117,7 +117,7 @@ namespace YouSurvey.Internal
             var survey1 = new Survey();
             survey1.Name = "ASP.NET 5";
             survey1.Description = "A demo on ASP.NET 5";
-            survey1.CreatedBy = "james";
+            survey1.CreatedBy = "james@james.com";
             survey1.CreatedDate = DateTime.UtcNow.AddDays(-10);
             survey1.LastUpdatedBy = survey1.CreatedBy;
             survey1.LastUpdatedDate = survey1.CreatedDate;
@@ -125,7 +125,7 @@ namespace YouSurvey.Internal
             var survey1Question1 = new Question();
             survey1Question1.Description = "How well did the instructor engage you during the demo?";
             survey1Question1.AllowMultipleAnswers = false;
-            survey1Question1.CreatedBy = "james";
+            survey1Question1.CreatedBy = "james@james.com";
             survey1Question1.CreatedDate = DateTime.UtcNow.AddDays(-10);
             survey1Question1.LastUpdatedBy = survey1Question1.CreatedBy;
             survey1Question1.LastUpdatedDate = survey1Question1.CreatedDate;
@@ -136,7 +136,7 @@ namespace YouSurvey.Internal
 
             var survey1Question2 = new Question();
             survey1Question2.Description = "Overall do you feel this course helped you learn something new?";
-            survey1Question2.CreatedBy = "james";
+            survey1Question2.CreatedBy = "james@james.com";
             survey1Question2.AllowMultipleAnswers = false;
             survey1Question2.CreatedDate = DateTime.UtcNow.AddDays(-10);
             survey1Question2.LastUpdatedBy = survey1Question2.CreatedBy;
@@ -146,7 +146,7 @@ namespace YouSurvey.Internal
 
             var survey1Question3 = new Question();
             survey1Question3.Description = "Would you recommend this course to your colleague?";
-            survey1Question3.CreatedBy = "james";
+            survey1Question3.CreatedBy = "james@james.com";
             survey1Question3.AllowMultipleAnswers = false;
             survey1Question3.CreatedDate = DateTime.UtcNow.AddDays(-10);
             survey1Question3.LastUpdatedBy = survey1Question3.CreatedBy;
@@ -156,7 +156,7 @@ namespace YouSurvey.Internal
 
             var survey1Question4 = new Question();
             survey1Question4.Description = "Which of the following topics that you really liked?";
-            survey1Question4.CreatedBy = "james";
+            survey1Question4.CreatedBy = "james@james.com";
             survey1Question4.AllowMultipleAnswers = true;
             survey1Question4.CreatedDate = DateTime.UtcNow.AddDays(-10);
             survey1Question4.LastUpdatedBy = survey1Question4.CreatedBy;
@@ -174,7 +174,7 @@ namespace YouSurvey.Internal
             var survey2 = new Survey();
             survey2.Name = "TMobile Center Visit";
             survey2.Description = "Your recent visit to the TMobile center";
-            survey2.CreatedBy = "john";
+            survey2.CreatedBy = "john@john.com";
             survey2.CreatedDate = DateTime.UtcNow.AddDays(-8);
             survey2.LastUpdatedBy = survey2.CreatedBy;
             survey2.LastUpdatedDate = survey2.CreatedDate;
@@ -182,7 +182,7 @@ namespace YouSurvey.Internal
             var survey2Question1 = new Question();
             survey2Question1.Description = "How well did the representative engage you during the demo?";
             survey2Question1.AllowMultipleAnswers = false;
-            survey2Question1.CreatedBy = "john";
+            survey2Question1.CreatedBy = "john@john.com";
             survey2Question1.CreatedDate = DateTime.UtcNow.AddDays(-10);
             survey2Question1.LastUpdatedBy = survey2Question1.CreatedBy;
             survey2Question1.LastUpdatedDate = survey2Question1.CreatedDate;
@@ -193,7 +193,7 @@ namespace YouSurvey.Internal
 
             var survey2Question2 = new Question();
             survey2Question2.Description = "Did you have to wait for a long time before someone could help you?";
-            survey2Question2.CreatedBy = "john";
+            survey2Question2.CreatedBy = "john@john.com";
             survey2Question2.AllowMultipleAnswers = false;
             survey2Question2.CreatedDate = DateTime.UtcNow.AddDays(-10);
             survey2Question2.LastUpdatedBy = survey2Question2.CreatedBy;
@@ -203,7 +203,7 @@ namespace YouSurvey.Internal
 
             var survey2Question3 = new Question();
             survey2Question3.Description = "Would you recommend TMobile to your friends?";
-            survey2Question3.CreatedBy = "john";
+            survey2Question3.CreatedBy = "john@john.com";
             survey2Question3.AllowMultipleAnswers = false;
             survey2Question3.CreatedDate = DateTime.UtcNow.AddDays(-10);
             survey2Question3.LastUpdatedBy = survey2Question3.CreatedBy;
@@ -218,7 +218,7 @@ namespace YouSurvey.Internal
             var survey3 = new Survey();
             survey3.Name = "Smart Thermostat";
             survey3.Description = "Your experience with our Smart Thermostat";
-            survey3.CreatedBy = "mike";
+            survey3.CreatedBy = "mike@mike.com";
             survey3.CreatedDate = DateTime.UtcNow.AddDays(-8);
             survey3.LastUpdatedBy = survey3.CreatedBy;
             survey3.LastUpdatedDate = survey3.CreatedDate;
@@ -226,7 +226,7 @@ namespace YouSurvey.Internal
             var survey3Question1 = new Question();
             survey3Question1.Description = "How easy was it to assembly and install the thermostat?";
             survey3Question1.AllowMultipleAnswers = false;
-            survey3Question1.CreatedBy = "mike";
+            survey3Question1.CreatedBy = "mike@mike.com";
             survey3Question1.CreatedDate = DateTime.UtcNow.AddDays(-10);
             survey3Question1.LastUpdatedBy = survey3Question1.CreatedBy;
             survey3Question1.LastUpdatedDate = survey3Question1.CreatedDate;
@@ -237,7 +237,7 @@ namespace YouSurvey.Internal
 
             var survey3Question2 = new Question();
             survey3Question2.Description = "Was the information on the display of the thermsotat helpful for you?";
-            survey3Question2.CreatedBy = "mike";
+            survey3Question2.CreatedBy = "mike@mike.com";
             survey3Question2.AllowMultipleAnswers = false;
             survey3Question2.CreatedDate = DateTime.UtcNow.AddDays(-10);
             survey3Question2.LastUpdatedBy = survey3Question2.CreatedBy;
@@ -247,7 +247,7 @@ namespace YouSurvey.Internal
 
             var survey3Question3 = new Question();
             survey3Question3.Description = "Would you recommend this thermostat to your friends?";
-            survey3Question3.CreatedBy = "mike";
+            survey3Question3.CreatedBy = "mike@mike.com";
             survey3Question3.AllowMultipleAnswers = false;
             survey3Question3.CreatedDate = DateTime.UtcNow.AddDays(-10);
             survey3Question3.LastUpdatedBy = survey3Question3.CreatedBy;

@@ -8,13 +8,13 @@ namespace YouSurvey.Models
 {
     public class Survey
     {
-        public string SurveyId { get; set; }
+        public int SurveyId { get; set; }
 
         public string Name { get; set; }
 
         public string Description { get; set; }
 
-        public List<Question> Questions { get; set; } = new List<Question>();
+        public virtual List<Question> Questions { get; set; } = new List<Question>();
 
         public string CreatedBy { get; set; }
 
