@@ -13,5 +13,15 @@ namespace YouSurvey.Areas.Admin.Controllers
         {
             return View();
         }
+
+        public IActionResult Users()
+        {
+            return View();
+        }
+
+        public IActionResult Surveys()
+        {
+            return View();
+        }
     }
 }
