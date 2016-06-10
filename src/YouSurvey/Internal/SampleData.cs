@@ -75,7 +75,11 @@ namespace YouSurvey.Internal
                 userManager,
                 configuration[defaultAdminUserName],
                 configuration[defaultAdminPassword],
-                new[] { new Claim("ManageAllSurveys", "Allowed") });
+                new[]
+                {
+                    new Claim("IsAdmin", "Yes"),
+                    new Claim("ManageAllSurveys", "Allowed")
+                });
 
             // create regular users
             await CreateUser(
