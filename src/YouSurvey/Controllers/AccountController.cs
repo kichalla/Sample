@@ -63,6 +63,16 @@ namespace YouSurvey.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
+
+                    // Redirect to the admin area default view if the current user is an administrator
+                    if (HttpContext.User.HasClaim("IsAdmin", "Yes"))
+                    {
+                        if (string.IsNullOrEmpty(returnUrl))
+                        {
+                            return RedirectToAction("Index", "Home", new { area = "Admin" });
+                        }
+                    }
+
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
